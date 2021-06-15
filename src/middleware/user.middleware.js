@@ -1,9 +1,10 @@
 const errorType = require('../constants/error-types')
 const service = require('../services/user.service')
+const md5Password = require('../utils/password-handle')
 const verifyUser = async (ctx,next) => {
     // 获取用户名密码
     const {name,password} = ctx.request.body
-    console.log(name,password);
+    // console.log(name,password);
     // 判断用户名密码不为空
     if(!name || !password){
         const error = new Error(errorType.NAME_OR_PASSWORD_IS_REQUIRE)
@@ -15,10 +16,22 @@ const verifyUser = async (ctx,next) => {
         const error = new Error(errorType.USER_ALREADY_EXIST)
         return ctx.app.emit('error',error,ctx)
     }
+    
+
+    await next();
+}
+
+// 对密码进行加密中间件
+const handlePassword = async (ctx,next) => {
+    
+    let {password} = ctx.request.body
+    console.log(md5Password(password));
+    ctx.request.body.password = md5Password(password)
 
     await next();
 }
 
 module.exports = {
-    verifyUser
+    verifyUser,
+    handlePassword
 }
