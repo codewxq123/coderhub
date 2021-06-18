@@ -7,7 +7,7 @@ class AuthController {
         const {id,name} = ctx.user
         
         const token = jwt.sign({id,name},config.PRIVATE_KEY,{
-            expiresIn:1000,
+            expiresIn:24*60*60,
             algorithm:'RS256'
         })
         console.log(token);

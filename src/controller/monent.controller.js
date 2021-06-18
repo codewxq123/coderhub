@@ -1,7 +1,10 @@
-const {create} = require('../services/monent.service')
+
 const {
+    create,
     getMonentById,
-    getMonentList
+    getMonentList,
+    update,
+    remove
 } = require('../services/monent.service')
 class MonentController {
     async create(ctx,next){
@@ -16,7 +19,6 @@ class MonentController {
         ctx.body = result
 
     }
-
     async detail(ctx,next){
         // 获取monent
         const monentId = ctx.params.monentId
@@ -31,6 +33,20 @@ class MonentController {
         const result = await getMonentList(offset,size)
         ctx.body = result
     }
+    async update(ctx,next){
+        const {monentId} = ctx.params
+        const {content }= ctx.request.body
+        const {id} = ctx.user
+        
+        const result = await update(content,monentId)
+        ctx.body = result
+    }
+    async remove(ctx,next){
+        const monentId = ctx.params
+        const result = await remove(monentId)
+        ctx.body = result
+    }
+
 }
 
 module.exports = new MonentController()

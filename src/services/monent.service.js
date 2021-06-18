@@ -24,6 +24,19 @@ class MonentService {
         const result = await connection.execute(statement,[offset,size])
         return result[0]
     }
+    // 修改内容
+    async update(content,monentId){
+        const statement = `UPDATE monent SET content = ? WHERE id = ?`
+        const result = await connection.execute(statement,[content,monentId])
+        return result[0]
+    }
+
+    async remove(monentId){
+        console.log(monentId);
+        const statement = `DELETE FROM monent WHERE id = ?`
+        const result = await connection.execute(statement,[monentId])
+        return result[0]
+    }
 }
 
 module.exports = new MonentService()
