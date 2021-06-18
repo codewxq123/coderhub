@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 const {PUBLIC_KEY} = require('../app/config')
 const errorType = require('../constants/error-types')
+const authService = require('../services/auth.service')
+
 const {
     getUserByName
 } = require('../services/user.service')
@@ -61,7 +63,27 @@ const verifyAuth = async(ctx,next) => {
     }
 }
 
+// 验证用户是否有权限
+const verifyPermission = async(ctx,next) => {
+    console.log('验证权限的middleware');
+    // 获取monentId和用户id'
+    const [resourceKey] = Object.keys(ctx.params)
+    const tableName = resourceKey.replace("Id","")
+    const resourceId = ctx.params[resourceKey]
+    
+    const {id} = ctx.user 
+    // 查询是否具备权限
+    const isPremission = await authService.checkResource(tableName,resourceId,id)
+    
+    if(!isPremission){
+        const error = new Error(errorType.UNPREMISSION)
+        return ctx.app.emit('error',error,ctx)
+    }
+    
+    await next()
+}
 module.exports = {
     verifyLogin,
-    verifyAuth
+    verifyAuth,
+    verifyPermission
 }

@@ -1,10 +1,16 @@
 const Router = require('koa-router')
 
-const {verifyAuth} = require('../middleware/auto.middleware')
+const {
+    verifyAuth,
+    verifyPermission
+} = require('../middleware/auto.middleware')
 const {
     create,
     detail,
-    list
+    list,
+    update,
+    remove
+   
 } = require('../controller/monent.controller')
 
 const monentRouter = new Router({prefix:'/monent'})
@@ -13,5 +19,10 @@ monentRouter.post('/',verifyAuth,create)
 monentRouter.get('/:monentId',detail)
 // 查询多条
 monentRouter.get('/',list)
+// 修改内容
+// 用户必须登录，验证权限
+monentRouter.patch('/:monentId',verifyAuth,verifyPermission,update)
+// 删除内容
+monentRouter.delete('/:monentId',verifyAuth,verifyPermission,remove)
 
 module.exports = monentRouter
