@@ -5,11 +5,15 @@ const {
     verifyPermission
 } = require('../middleware/auto.middleware')
 const {
+    verifyLabelExist
+} = require('../middleware/label.middleware')
+const {
     create,
     detail,
     list,
     update,
-    remove
+    remove,
+    addLabels
    
 } = require('../controller/monent.controller')
 
@@ -24,5 +28,7 @@ monentRouter.get('/',list)
 monentRouter.patch('/:monentId',verifyAuth,verifyPermission,update)
 // 删除内容
 monentRouter.delete('/:monentId',verifyAuth,verifyPermission,remove)
+// 给动态添加标签
+monentRouter.post('/:monentId/labels',verifyAuth,verifyPermission,verifyLabelExist,addLabels)
 
 module.exports = monentRouter

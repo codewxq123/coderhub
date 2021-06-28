@@ -3,7 +3,8 @@ const {
     create,
     reply,
     update,
-    remove
+    remove,
+    list
 } = require('../controller/comment.controller')
 const {
     verifyAuth,
@@ -18,4 +19,6 @@ commentRouter.post('/:commentId/reply',verifyAuth,reply)
 commentRouter.patch('/:commentId',verifyAuth,verifyPermission,update)
 // 删除评论
 commentRouter.delete('/:commentId',verifyAuth,verifyPermission,remove)
+// 获取评论 （单独接口）
+commentRouter.get('/',list)
 module.exports = commentRouter
