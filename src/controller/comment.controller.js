@@ -2,10 +2,12 @@ const {
     create,
     reply,
     update,
-    remove
+    remove,
+    getCommentBymonentId
 } = require('../services/comment.service')
 class CommentController {
     async create(ctx,next){
+        
         const {monentId,content} = ctx.request.body
         const userId = ctx.user.id
         const result = await create(monentId,content,userId)
@@ -32,6 +34,13 @@ class CommentController {
     async remove(ctx,next) {
         const {commentId} = ctx.params
         const result = await remove(commentId)
+        ctx.body = result
+    }
+    async list(ctx,next){
+        console.log(ctx.query);
+        const {monentId} = ctx.query
+        console.log(monentId);
+        const result = await getCommentBymonentId(monentId)
         ctx.body = result
     }
 }

@@ -15,6 +15,11 @@ class UserService {
 
         return result[0]
     }
+    async updateAvatarUrlById(avatarUrl,userId){
+        const statement = `UPDATE users SET avatar = ? WHERE id = ?`
+        const result = await connection.execute(statement,[avatarUrl,userId])
+        return result[0]
+    }
 }
 
 module.exports = new UserService()

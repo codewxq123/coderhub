@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../app/config')
 class AuthController {
     async login(ctx,next){
-        console.log(config.PRIVATE_KEY);
+        
         // 颁发token
         const {id,name} = ctx.user
         
@@ -10,8 +10,7 @@ class AuthController {
             expiresIn:24*60*60,
             algorithm:'RS256'
         })
-        console.log(token);
-        console.log(ctx.user);
+
         ctx.body = {id,name,token}
     }
 

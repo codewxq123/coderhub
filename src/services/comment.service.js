@@ -19,13 +19,16 @@ class CommentService {
     }
 
     async remove(commentId){
-        
         const statement = `DELETE FROM comment WHERE id = ? `
         const result = await connection.execute(statement,[commentId])
-        
+        return result[0]  
+    }
+    async getCommentBymonentId(monentId){
+        const statement = `SELECT c.id,c.content,c.comment_id commentId,c.createAT createTime,
+                           c.updateAT updateTime,JSON_OBJECT('id',u.id,'name',u.name) user FROM comment c
+                           LEFT JOIN users u ON c.user_id = u.id  WHERE c.monent_id = ?`
+        const result = await connection.execute(statement,[monentId])
         return result[0]
-        
-        
     }
 }
 
